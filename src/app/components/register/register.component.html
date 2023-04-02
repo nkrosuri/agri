@@ -1,0 +1,88 @@
+<div>
+    <div id="background-image">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div id="glass-image-center">
+                        <div id="glass-image">
+                            <div id="Login-Items">
+                                <h1 id="header">SIGNUP</h1>
+                            </div>
+                            <div id="form-Items">
+                                <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()" autocomplete="off">
+                                    <div id="input-elements">
+                                        <label for="firstName" id="lable">
+                                            <p class="input-heading">FullName</p>
+                                            <input class="login-input" type="text" name="fullName" formControlName="fullName">
+                                            <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched || submitted)"
+                                                id="error-message">
+                                                <small class="error-message-login"
+                                                    *ngIf="fullName?.errors?.['required']">FullName is
+                                                    required.</small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <!-- <div id="input-spacing">
+                                        <label for="password">
+                                            <p class="input-heading">Lastname</p>
+                                            <input class="login-input" type="text" name="lastName"
+                                                formControlName="lastName">
+                                            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || submitted)">
+                                                <small class="error-message-login"
+                                                    *ngIf="lastName.errors?.['required']">Lastname is required.</small>
+                                            </div>
+                                        </label>
+                                    </div> -->
+                                    <div id="input-spacing">
+                                        <label for="password">
+                                            <p class="input-heading">Username/Email</p>
+                                            <input class="login-input" type="text" name="email"
+                                                formControlName="email">
+                                            <div *ngIf="email.invalid && (email.dirty || email.touched || submitted)">
+                                                <small class="error-message-login"
+                                                    *ngIf="email.errors?.['required']">Username/Email is required.</small>
+                                                    <small class="error-message-login"
+                                                    *ngIf="email.errors?.['pattern']">Please enter a valid email.</small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div id="input-spacing">
+                                        <label for="password">
+                                            <p class="input-heading">Password</p>
+                                            <input class="login-input" type="text" name="password"
+                                                formControlName="password">
+                                            <div *ngIf="password.invalid && (password.dirty || password.touched || submitted)">
+                                                <small class="error-message-login"
+                                                    *ngIf="password.errors?.['required']">Password is required.</small>
+                                                    <small class="error-message-login"
+                                                    *ngIf="password.errors?.['pattern']">password requires min 8 chars.</small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div id="input-spacing">
+                                        <label for="phoneNumber">
+                                            <p class="input-heading">UserType</p>
+                                            <select formControlName="userType" class="login-input">  
+                                                <option disabled>Select userType</option>  
+                                                <option>farmer</option>
+                                                <option>farm analyzer</option>  
+                                            </select>  
+                                            <div *ngIf="userType.invalid && (userType.dirty || userType.touched || submitted)">
+                                                <small class="error-message-login"
+                                                    *ngIf="userType.errors?.['required']">userType is required.</small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div id="btns">
+                                        <button class="btn btn-danger" id="btn-login-1">Submit</button>
+                                        <a routerLink="/login" id="btn-login-2">Login</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

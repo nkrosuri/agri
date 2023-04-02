@@ -1,0 +1,114 @@
+#background-image {
+    background-image: url("../../images/pexels-peter-fazekas-1137332.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+}
+
+#glass-image {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(3.2px);
+    -webkit-backdrop-filter: blur(3.2px);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    min-height: 80vh;
+    min-width: 500px;
+    position: relative;
+    bottom: 12px;
+}
+
+#glass-image-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+#header {
+    font-family: Merriweather;
+    font-weight: 400;
+    line-height: 1.8;
+    letter-spacing: 2px;
+    color: #dc3545;
+}
+
+#Login-Items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+#form-Items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    top: 10px;
+}
+
+.input-heading {
+    font-family: 'Helvetica';
+    margin: 0px 5px;
+    padding: 0px;
+    letter-spacing: 0.5px;
+    position: relative;
+    left: -30px;
+    font-weight: 600;
+    /* color: darkorange; */
+}
+
+.login-input {
+    padding: 5px 0px;
+    padding-left: 10px;
+    width: 140%;
+    margin: 5px 0px;
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    left: -30px;
+}
+
+.error-message-login{
+    color: rgb(243, 17, 17);
+    position: relative;
+    left: -30px;
+    margin-left: 10px;
+    letter-spacing: 0.5px;
+}
+
+#btn-login-1 {
+    position: relative;
+    left: 190px;
+}
+
+#btn-login-2 {
+    position: relative;
+    left: -90px;
+    letter-spacing: 0.8px;
+    color: #dc3545;
+    font-weight: 600;
+}
+
+#btn-login-2:hover {
+    position: relative;
+    left: -90px;
+    letter-spacing: 0.8px;
+    color: #35b5dc;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#btns {
+    position: fixed;
+    top: 650px;
+}

@@ -1,0 +1,52 @@
+<div>
+    <div id="background-image">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div id="glass-image-center">
+                        <div id="glass-image">
+                            <div id="Login-Items">
+                                <h1 id="header">LOGIN</h1>
+                            </div>
+                            <div id="form-Items">
+                                <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
+                                    <div id="input-elements">
+                                        <label for="userName/email" id="lable">
+                                            <p class="input-heading">Username/email</p>
+                                            <input class="login-input" type="text" name="email" formControlName="email">
+                                            <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                                                id="error-message">
+                                                <small class="error-message-login"
+                                                    *ngIf="email?.errors?.['required']">Username/Email is
+                                                    required.</small>
+                                                    <small class="error-message-login"
+                                                    *ngIf="email?.errors?.['pattern']">Please Enter valid email.</small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label for="password">
+                                            <p class="input-heading">Password</p>
+                                            <input class="login-input" type="text" name="password"
+                                                formControlName="password">
+                                            <div *ngIf="password.invalid && (password.dirty || password.touched)">
+                                                <small class="error-message-login"
+                                                    *ngIf="password.errors?.['required']">Password is required.</small>
+                                                    <small class="error-message-login"
+                                                    *ngIf="password.errors?.['pattern']">Password requires 8 char.</small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div id="btns">
+                                        <button class="btn btn-danger" id="btn-login-1">Submit</button>
+                                        <a routerLink="/register" id="btn-login-2">Register</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
