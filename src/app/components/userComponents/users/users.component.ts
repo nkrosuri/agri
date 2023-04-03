@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MapsAPILoader } from "@agm/core";
 import { CropsService } from 'src/app/services/cropsService/crops.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-users',
@@ -17,7 +18,10 @@ export class UsersComponent implements OnInit {
   longitude: any;
   zoom: any;
   address: any;
+  userType: any;
   submitted: boolean | undefined;
+  months = [{ id: 1, month: 'January' }, { id: 2, month: 'February' }, { id: 3, month: 'March' }, { id: 4, month: 'April' }, { id: 5, month: 'May' },
+  { id: 6, month: 'June' }, { id: 7, month: 'July' }, { id: 8, month: 'August' }, { id: 9, month: 'September' }, { id: 10, month: 'October' }, { id: 11, month: 'November' }, { id: 12, month: 'December' }]
   private geoCoder: any;
   @ViewChild('closeAddCropPopUp') closeAddCropPopUp: any;
   @ViewChild('search')
@@ -30,7 +34,7 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+  this.userType = localStorage.getItem('userType');
   this.mapsAPILoader.load().then(() => {
     this.setCurrentLocation();
     this.geoCoder = new google.maps.Geocoder;
@@ -62,7 +66,9 @@ export class UsersComponent implements OnInit {
     description: new FormControl('', Validators.required),
     imageUrl: new FormControl('', Validators.required),
     waterRequiredPerSqFeet: new FormControl('', Validators.required),
-    timePeriod: new FormControl('', Validators.required)
+    timePeriod: new FormControl('', Validators.required),
+    startSeason: new FormControl('', Validators.required),
+    endSeason: new FormControl('', Validators.required)
   });
 
   get cropName():any { return this.addCropForm.get('cropName') }
@@ -70,37 +76,109 @@ export class UsersComponent implements OnInit {
   get imageUrl():any { return this.addCropForm.get('imageUrl') }
   get waterRequiredPerSqFeet():any { return this.addCropForm.get('waterRequiredPerSqFeet') }
   get timePeriod():any { return this.addCropForm.get('timePeriod') }
+  get startSeason():any { return this.addCropForm.get('startSeason') }
+  get endSeason():any { return this.addCropForm.get('endSeason') }
+
 
   addCrop() {                                                                     
     this.submitted = true;
     if (this.addCropForm.valid) {
       this.cropsService.createCrop(this.addCropForm.value).subscribe((res: any) => {
-        console.log(res);
+        this.getCrops();
+        this.addCropForm.reset();
+        this.addCropForm.markAsPristine();
+        this.addCropForm.markAsUntouched();
+        this.addCropForm.updateValueAndValidity();
+        this.submitted = false;
+        this.closeAddCropPopUp.nativeElement.click();
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500  
+        })
+      }, (err) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: err.error.error,
+          showConfirmButton: false,
+          timer: 1500
+        })
       })
     }
-    this.getCrops();
-    this.addCropForm.reset();
-    this.addCropForm.markAsPristine();
-    this.addCropForm.markAsUntouched();
-    this.addCropForm.updateValueAndValidity();
-    this.submitted = false;
-    this.closeAddCropPopUp.nativeElement.click();
   }
 
   getCrops() {
     this.cropsService.getCrops().subscribe((res: any) => {
-      if (res && res.data) {
+      if (this.userType == 'farm analyzer') {
+        this.cropsData = res.data.filter((item: any): any => {
+          return item.owned
+        })
+      } else {
         this.cropsData = res.data;
       }
-    })
+  })
   }
+
+  editCropForm = new FormGroup({
+    _id: new FormControl(''),
+    cropName: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    imageUrl: new FormControl('', Validators.required),
+    waterRequiredPerSqFeet: new FormControl('', Validators.required),
+    timePeriod: new FormControl('', Validators.required),
+    startSeason: new FormControl('', Validators.required),
+    endSeason: new FormControl('', Validators.required),
+    owned: new FormControl('')
+  });
 
   editCrop(item: any) {
-    this.cropsService.updateCrop(item).subscribe((res: any) => {
-      console.log("Res", res);
-    })
+    console.log("item", item);
+    this.editCropForm.patchValue({
+      _id: item._id,
+      cropName: item && item.cropName,
+      description: item && item.description,
+      imageUrl: item && item.imageUrl,
+      waterRequiredPerSqFeet: item && item.waterRequiredPerSqFeet,
+      timePeriod: item && item.timePeriod,
+      startSeason: item && item.startSeason,
+      endSeason: item && item.endSeason,
+      owned: item && item.owned
+    });
+    console.log("editCropForm", this.editCropForm.value);
   }
 
+  editCropDialog() {
+    this.cropsService.updateCrop(this.editCropForm.value).subscribe((res: any) => {
+      if (res && res.data) {
+        this.addCropForm.reset();
+      this.addCropForm.markAsPristine();
+      this.addCropForm.markAsUntouched();
+      this.addCropForm.updateValueAndValidity();
+      this.submitted = false;
+      this.closeAddCropPopUp.nativeElement.click();
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 1500  
+      })
+      }
+    }, (err) => {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: err.error.error,
+        showConfirmButton: false,
+        timer: 1500
+      })
+    })
+    
+  }
+ 
   deleteCrop(item: any) {
     this.cropsService.deleteCrop(item._id).subscribe((res: any) => {});
     this.getCrops();
@@ -119,7 +197,6 @@ export class UsersComponent implements OnInit {
   }
 
   markerDragEnd($event: any) {
-    console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.getAddress(this.latitude, this.longitude);
@@ -127,8 +204,6 @@ export class UsersComponent implements OnInit {
 
   getAddress(latitude:any, longitude:any) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results:any, status:any) => {
-      console.log(results);
-      console.log(status);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;

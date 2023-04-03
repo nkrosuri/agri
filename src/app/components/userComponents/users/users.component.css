@@ -153,17 +153,17 @@ agm-map {
 }
 
 textarea {
-  width: 89%;
+  width: 96%;
 }
 
-.login-input {
-  /* width: 150%; */
-  /* border: 2px solid black; */
-  /* border-radius: 10px; */
-}
+/* select{
+  width: 96%;
+  height: 29px;
+} */
 
-.input-heading {
-  /* color: #ffffff; */
+.dropDown{
+  width: 96%;
+  height: 29px;
 }
 
 .error-message-login {

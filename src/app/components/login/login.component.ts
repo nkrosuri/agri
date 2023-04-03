@@ -29,9 +29,10 @@ export class LoginComponent {
   submitLoginForm() {
     if (this.loginForm.valid) {
       this.loginService.loginUser(this.loginForm.value).subscribe(res => {
-        // console.log(res);
+        console.log(res);
         if (res && res?.token) {
           localStorage.setItem('token', res?.token)
+          localStorage.setItem('userType', res?.userType)
           this.router.navigate(["/users"]);
         }
       })

@@ -17,20 +17,20 @@
             <div class="content">
                 <tabset #tabset>
                     <tab heading="Crops">
-                        <div class="text-right">
+                        <div class="text-right" *ngIf="userType == 'farm analyzer'">
                             <button class="btn btn-primary" (click)="addCrop" data-toggle="modal"
                                 data-target="#addCropModal">Add crops</button>
                         </div>
-                        <div class="modal" id="addCropModal" tabindex="-1" role="dialog"
-                            aria-labelledby="addCropModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="addCropModalLabel">ADD CROP</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAddCropPopUp>
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
+                        <div class="modal fade" id="addCropModal" tabindex="-1" role="dialog" aria-labelledby="addCropModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="addCropModalTitle">ADD CROP</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAddCropPopUp>
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
                                     <form [formGroup]="addCropForm" (ngSubmit)="addCrop()">
                                         <div class="modal-body">
                                             <div class="container">
@@ -52,10 +52,7 @@
                                                         <span class="input-heading">Description</span>
                                                     </div>
                                                     <div class="col-7">
-                                                        <!-- <input class="login-input" type="text-area" name="description"
-                                                            formControlName="description"> -->
                                                             <textarea name="description" cols="30" rows="" formControlName="description" class="login-input-textArea">
-
                                                             </textarea>
                                                         <div
                                                             *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
@@ -65,7 +62,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-5 pb-3">
-                                                        <span class="input-heading">ImageUrl</span>
+                                                        <span class="input-heading">Image Url</span>
                                                     </div>
                                                     <div class="col-7">
                                                         <input class="login-input" type="url" name="imageUrl"
@@ -78,7 +75,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-5 pb-3">
-                                                        <span class="input-heading">WaterRequiredPerSqFeet</span>
+                                                        <span class="input-heading">Water Required Per Sq Feet (in liters)</span>
                                                     </div>
                                                     <div class="col-7">
                                                         <input class="login-input" type="number"
@@ -93,7 +90,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-5 pb-3">
-                                                        <span class="input-heading">TimePeriod</span>
+                                                        <span class="input-heading">Time Period</span>
                                                     </div>
                                                     <div class="col-7">
                                                         <input class="login-input" type="number" name="timePeriod"
@@ -102,6 +99,34 @@
                                                             *ngIf="timePeriod.invalid && (timePeriod.dirty || timePeriod.touched || submitted)">
                                                             <small class="error-message-login"
                                                                 *ngIf="timePeriod.errors?.['required']">TimePeriod is
+                                                                required.</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5 pb-3">
+                                                        <span class="input-heading">Start Season</span>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <select formControlName="startSeason" class="dropDown">
+                                                            <option *ngFor="let month of months" [value]="month.id">{{month.month}}</option>
+                                                        </select>
+                                                        <div
+                                                            *ngIf="startSeason.invalid && (startSeason.dirty || startSeason.touched || submitted)">
+                                                            <small class="error-message-login"
+                                                                *ngIf="startSeason.errors?.['required']">startSeason is
+                                                                required.</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5 pb-3">
+                                                        <span class="input-heading">End Season</span>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <select formControlName="endSeason" class="dropDown">
+                                                            <option *ngFor="let month of months" [value]="month.id">{{month.month}}</option>
+                                                        </select>
+                                                        <div
+                                                            *ngIf="endSeason.invalid && (endSeason.dirty || endSeason.touched || submitted)">
+                                                            <small class="error-message-login"
+                                                                *ngIf="endSeason.errors?.['required']">EndSeason is
                                                                 required.</small>
                                                         </div>
                                                     </div>
@@ -115,8 +140,9 @@
                                         </div>
                                     </form>
                                 </div>
+                              </div>
                             </div>
-                        </div>
+                          </div>
                         <div id="crops-card-position">
                             <div *ngFor="let crop of cropsData">
                                 <div class="card" id="card-position">
@@ -124,10 +150,134 @@
                                         <img class="card-img-top" src={{crop.imageUrl}} alt="Card image cap" width="50" height="200">
                                         <h5 class="card-title">{{crop.cropName}}</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">{{crop.description}}</h6>
-                                        <!-- <p class="card-text">{{crop.description}}</p> -->
-                                        <div class="text-right">
+                                        <div class="text-right" *ngIf="userType == 'farm analyzer'">
                                             <button class="btn btn-danger mr-3" (click)="deleteCrop(crop)">Delete</button>
-                                            <button class="btn btn-success pl-10" (click)="editCrop(crop)">Edit</button>                                        </div>
+                                            <button class="btn btn-primary" (click)="editCrop(crop)" data-toggle="modal"
+                                            data-target="#editCropModal">Edit</button>
+                                        </div>
+                                    <div class="modal fade" id="editCropModal" tabindex="-1" role="dialog" aria-labelledby="editCropModalTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="editCropModalTitle">Edit CROP</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeAddCropPopUp>
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form [formGroup]="editCropForm" (ngSubmit)="editCropDialog()">
+                                                    <div class="modal-body">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="col-5 pb-3">
+                                                                    <span class="input-heading">CropName</span>
+                                                                </div>
+                                                                <div class="col-7">
+                                                                    <input class="login-input" type="text" name="cropName"
+                                                                        formControlName="cropName">
+                                                                    <div
+                                                                        *ngIf="cropName.invalid && (cropName.dirty || cropName.touched || submitted)">
+                                                                        <small class="error-message-login"
+                                                                            *ngIf="cropName.errors?.['required']">CropName is
+                                                                            required.</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5 pb-3">
+                                                                    <span class="input-heading">Description</span>
+                                                                </div>
+                                                                <div class="col-7">
+                                                                        <textarea name="description" cols="30" rows="" formControlName="description" class="login-input-textArea">
+            
+                                                                        </textarea>
+                                                                    <div
+                                                                        *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
+                                                                        <small class="error-message-login"
+                                                                            *ngIf="description.errors?.['required']">Description is
+                                                                            required.</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5 pb-3">
+                                                                    <span class="input-heading">ImageUrl</span>
+                                                                </div>
+                                                                <div class="col-7">
+                                                                    <input class="login-input" type="url" name="imageUrl"
+                                                                        formControlName="imageUrl">
+                                                                    <div
+                                                                        *ngIf="imageUrl.invalid && (imageUrl.dirty || imageUrl.touched || submitted)">
+                                                                        <small class="error-message-login"
+                                                                            *ngIf="imageUrl.errors?.['required']">ImageUrl is
+                                                                            required.</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5 pb-3">
+                                                                    <span class="input-heading">Water Required Per Sq Feet(in liters)</span>
+                                                                </div>
+                                                                <div class="col-7">
+                                                                    <input class="login-input" type="number"
+                                                                        name="waterRequiredPerSqFeet"
+                                                                        formControlName="waterRequiredPerSqFeet">
+                                                                    <div
+                                                                        *ngIf="waterRequiredPerSqFeet.invalid && (waterRequiredPerSqFeet.dirty || waterRequiredPerSqFeet.touched || submitted)">
+                                                                        <small class="error-message-login"
+                                                                            *ngIf="imageUrl.errors?.['required']">WaterRequiredPerSqFeet
+                                                                            is
+                                                                            required.</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5 pb-3">
+                                                                    <span class="input-heading">TimePeriod</span>
+                                                                </div>
+                                                                <div class="col-7">
+                                                                    <input class="login-input" type="number" name="timePeriod"
+                                                                        formControlName="timePeriod">
+                                                                    <div
+                                                                        *ngIf="timePeriod.invalid && (timePeriod.dirty || timePeriod.touched || submitted)">
+                                                                        <small class="error-message-login"
+                                                                            *ngIf="timePeriod.errors?.['required']">TimePeriod is
+                                                                            required.</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5 pb-3">
+                                                                    <span class="input-heading">Start Season</span>
+                                                                </div>
+                                                                <div class="col-7">
+                                                                    <select formControlName="startSeason" class="dropDown">
+                                                                        <option *ngFor="let month of months" [value]="month.id">{{month.month}}</option>
+                                                                    </select>
+                                                                    <div
+                                                                        *ngIf="startSeason.invalid && (startSeason.dirty || startSeason.touched || submitted)">
+                                                                        <small class="error-message-login"
+                                                                            *ngIf="startSeason.errors?.['required']">startSeason is
+                                                                            required.</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-5 pb-3">
+                                                                        <span class="input-heading">End Season</span>
+                                                                    </div>
+                                                                <div class="col-7">
+                                                                    <select formControlName="endSeason" class="dropDown">
+                                                                        <option *ngFor="let month of months" [value]="month.id">{{month.month}}</option>
+                                                                    </select>
+                                                                    <div
+                                                                        *ngIf="endSeason.invalid && (endSeason.dirty || endSeason.touched || submitted)">
+                                                                        <small class="error-message-login"
+                                                                            *ngIf="endSeason.errors?.['required']">EndSeason is
+                                                                            required.</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                 </div>
                             </div>

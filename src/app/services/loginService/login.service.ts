@@ -22,4 +22,8 @@ export class LoginService {
     return this.http.post('https://agroadvice.violetdesk.com/api/users/login', data);
   }
 
+  isLoggedIn() {
+    return !!localStorage.getItem('token');
+  }
+
 }
