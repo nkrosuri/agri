@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';  
 import { MapsAPILoader } from "@agm/core";
 import { CropsService } from 'src/app/services/cropsService/crops.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2'
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-users',
@@ -20,10 +20,12 @@ export class UsersComponent implements OnInit {
   address: any;
   userType: any;
   submitted: boolean | undefined;
+  cordinates: any;
   months = [{ id: 1, month: 'January' }, { id: 2, month: 'February' }, { id: 3, month: 'March' }, { id: 4, month: 'April' }, { id: 5, month: 'May' },
   { id: 6, month: 'June' }, { id: 7, month: 'July' }, { id: 8, month: 'August' }, { id: 9, month: 'September' }, { id: 10, month: 'October' }, { id: 11, month: 'November' }, { id: 12, month: 'December' }]
   private geoCoder: any;
   @ViewChild('closeAddCropPopUp') closeAddCropPopUp: any;
+  @ViewChild('closeAddCropPopUp') closeEditCropPopUp: any;
   @ViewChild('search')
   public searchElementRef: any;
 
@@ -94,7 +96,7 @@ export class UsersComponent implements OnInit {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Your work has been saved',
+          title: 'Crop created Successfully.',
           showConfirmButton: false,
           timer: 1500  
         })
@@ -113,9 +115,7 @@ export class UsersComponent implements OnInit {
   getCrops() {
     this.cropsService.getCrops().subscribe((res: any) => {
       if (this.userType == 'farm analyzer') {
-        this.cropsData = res.data.filter((item: any): any => {
-          return item.owned
-        })
+        this.cropsData = res.data;
       } else {
         this.cropsData = res.data;
       }
@@ -135,38 +135,61 @@ export class UsersComponent implements OnInit {
   });
 
   editCrop(item: any) {
-    console.log("item", item);
-    this.editCropForm.patchValue({
+    this.editCropForm.setValue({
       _id: item._id,
       cropName: item && item.cropName,
       description: item && item.description,
       imageUrl: item && item.imageUrl,
       waterRequiredPerSqFeet: item && item.waterRequiredPerSqFeet,
       timePeriod: item && item.timePeriod,
-      startSeason: item && item.startSeason,
-      endSeason: item && item.endSeason,
-      owned: item && item.owned
+      startSeason: item && item.startSeason || 1,
+      endSeason: item && item.endSeason || 6,
+      owned: item && item.owned 
     });
-    console.log("editCropForm", this.editCropForm.value);
   }
 
   editCropDialog() {
-    this.cropsService.updateCrop(this.editCropForm.value).subscribe((res: any) => {
-      if (res && res.data) {
-        this.addCropForm.reset();
-      this.addCropForm.markAsPristine();
-      this.addCropForm.markAsUntouched();
-      this.addCropForm.updateValueAndValidity();
-      this.submitted = false;
-      this.closeAddCropPopUp.nativeElement.click();
+    if (this.editCropForm.valid) {
+      this.cropsService.updateCrop(this.editCropForm.value).subscribe((res: any) => {
+        if (res) {
+          console.log("res", res);
+        this.editCropForm.reset();
+        this.editCropForm.markAsPristine();
+        this.editCropForm.markAsUntouched();
+        this.editCropForm.updateValueAndValidity();
+        this.submitted = false;
+        this.closeEditCropPopUp.nativeElement.click();
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Crop Updated Successfully.',
+          showConfirmButton: false,
+          timer: 1500  
+        })
+        }
+        this.getCrops();
+      }, (err) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: err.error.error,
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+    } 
+  }
+ 
+  deleteCrop(item: any) {
+    this.cropsService.deleteCrop(item._id).subscribe((res: any) => {
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: 'Your work has been saved',
+        title: 'Crop Deleated Successfully.',
         showConfirmButton: false,
         timer: 1500  
       })
-      }
+      this.getCrops();
     }, (err) => {
       Swal.fire({
         position: 'center',
@@ -175,13 +198,7 @@ export class UsersComponent implements OnInit {
         showConfirmButton: false,
         timer: 1500
       })
-    })
-    
-  }
- 
-  deleteCrop(item: any) {
-    this.cropsService.deleteCrop(item._id).subscribe((res: any) => {});
-    this.getCrops();
+    });
   }
 
 
@@ -191,6 +208,7 @@ export class UsersComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
+        this.cordinates = [this.latitude, this.longitude]
         this.zoom = 15;
       });
     }
@@ -199,22 +217,44 @@ export class UsersComponent implements OnInit {
   markerDragEnd($event: any) {
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
-    this.getAddress(this.latitude, this.longitude);
+    this.cordinates = [this.latitude, this.longitude]
+    // this.getAddress(this.latitude, this.longitude);
   }
 
-  getAddress(latitude:any, longitude:any) {
-    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results:any, status:any) => {
-      if (status === 'OK') {
-        if (results[0]) {
-          this.zoom = 12;
-          this.address = results[0].formatted_address;
-        } else {
-          window.alert('No results found');
-        }
-      } else {
-        window.alert('Geocoder failed due to: ' + status);
-      }
+  // getAddress(latitude:any, longitude:any) {
+  //   this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results:any, status:any) => {
+  //     if (status === 'OK') {
+  //       if (results[0]) {
+  //         this.zoom = 12;
+  //         this.address = results[0].formatted_address;
+  //       } else {
+  //         window.alert('No results found');
+  //       }
+  //     } else {
+  //       window.alert('Geocoder failed due to: ' + status);
+  //     }
+  //   });
+  // }
+
+  forcastFormData: any = new FormGroup({
+    cordinates: new FormControl(''),
+    corpId: new FormControl('', Validators.required),
+    areaOfFarm: new FormControl('', Validators.required)
+  })
+
+  formSubmit() {
+    this.forcastFormData.setValue({
+      cordinates: ['17.4707751', '78.3587426'],
+      cropId: this.forcastFormData.value.corpId,
+      areaOfFarm: this.forcastFormData.value.areaOfFarm
     });
+
+    console.log('forCastData', this.forcastFormData);
+
+    this.cropsService.generateForecastData(this.forcastFormData.value).subscribe((res: any): any => {
+      console.log("res", res);
+      
+    })
   }
 
 }

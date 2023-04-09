@@ -31,4 +31,8 @@ export class CropsService {
     return this.http.delete(`https://agroadvice.violetdesk.com/api/crops/${id}/delete`, { headers: this.headers });
   }
 
+  generateForecastData(data: any) {
+    return this.http.post('https://agroadvice.violetdesk.com/api/forecast/generate', data, { headers: this.headers });   
+  }
+
 }

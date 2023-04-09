@@ -140,12 +140,12 @@ height: 100%;
   display: flex; 
   flex-wrap: wrap; 
   align-items: center; 
-  /* justify-content: center; */
 }
 
 #card-position {
   width: 25rem; 
   margin: 10px;
+  height: 350px;
 }
 
 agm-map {
@@ -156,11 +156,6 @@ textarea {
   width: 96%;
 }
 
-/* select{
-  width: 96%;
-  height: 29px;
-} */
-
 .dropDown{
   width: 96%;
   height: 29px;
@@ -168,4 +163,12 @@ textarea {
 
 .error-message-login {
   color: red;
+}
+
+#foreCast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 63px;
+  padding-top: 18px;
 }

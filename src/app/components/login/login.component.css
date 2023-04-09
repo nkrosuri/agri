@@ -16,7 +16,7 @@
     backdrop-filter: blur(3.2px);
     -webkit-backdrop-filter: blur(3.2px);
     border: 1px solid rgba(255, 255, 255, 0.38);
-    min-height: 45vh;
+    min-height: 40vh;
     min-width: 500px;
     position: relative;
     bottom: 12px;
@@ -75,7 +75,7 @@
     left: -30px;
 }
 
-.error-message-login{
+.error-message-login {
     color: rgb(243, 17, 17);
     position: relative;
     left: -30px;
@@ -84,21 +84,23 @@
 }
 
 #btn-login-1 {
-    position: relative;
+    position: absolute;
     left: 190px;
+    top: -41px;
 }
 
 #btn-login-2 {
-    position: relative;
-    left: -90px;
+    position: absolute;
+    left: -11px;
     letter-spacing: 0.8px;
     color: #dc3545;
     font-weight: 600;
+    top: -42px;
 }
 
 #btn-login-2:hover {
     position: relative;
-    left: -90px;
+    left: -11px;
     letter-spacing: 0.8px;
     color: #35b5dc;
     font-weight: 600;

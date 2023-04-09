@@ -35,7 +35,7 @@ export class LoginComponent {
           localStorage.setItem('userType', res?.userType)
           this.router.navigate(["/users"]);
         }
-      })
+      });
     }
     
   }
