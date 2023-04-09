@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/loginService/login.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,14 @@ export class LoginComponent {
           localStorage.setItem('userType', res?.userType)
           this.router.navigate(["/users"]);
         }
+      }, (err) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: err.error.error,
+          showConfirmButton: false,
+          timer: 1500
+        })
       });
     }
     

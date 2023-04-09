@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/loginService/login.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -50,9 +51,18 @@ export class RegisterComponent {
     if(this.registerForm.valid){
         this.loginService.registerUser(this.registerForm.value).subscribe((res:any) => {
           if (res && res?.token) {
-            localStorage.setItem('token', res.token)
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('userType', res.userType);
             this.router.navigate(["/users"]);
           }
+        }, (err) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: err.error.error,
+            showConfirmButton: false,
+            timer: 1500
+          })
         })
       }
   }

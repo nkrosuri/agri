@@ -16,7 +16,7 @@
     backdrop-filter: blur(3.2px);
     -webkit-backdrop-filter: blur(3.2px);
     border: 1px solid rgba(255, 255, 255, 0.38);
-    min-height: 40vh;
+    min-height: 42vh;
     min-width: 500px;
     position: relative;
     bottom: 12px;
