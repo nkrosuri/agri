@@ -245,7 +245,7 @@ export class UsersComponent implements OnInit {
   })
 
   formSubmit() {
-    console.log("this.forcastFormData.value.corpId", this.forcastFormData.value);
+    // console.log("this.forcastFormData.value.corpId", this.forcastFormData.value);
     // console.log("cordinates", typeof this.cordinates[0]);
     
     // this.forcastFormData.setValue({
@@ -260,7 +260,7 @@ export class UsersComponent implements OnInit {
       areaOfFarm: Number(this.forcastFormData.value.areaOfFarm)
     });
 
-    // console.log('forCastData', this.forcastFormData.value);
+    console.log('forCastData', this.forcastFormData.value);
 
     this.cropsService.generateForecastData(this.forcastFormData.value).subscribe((res: any): any => {
       console.log("res", res);
