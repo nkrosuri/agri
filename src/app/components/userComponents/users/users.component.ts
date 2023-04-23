@@ -21,6 +21,8 @@ export class UsersComponent implements OnInit {
   userType: any;
   submitted: boolean | undefined;
   cordinates: any;
+  foreCastData: any;
+  setForeCast: any;
   months = [{ id: 1, month: 'January' }, { id: 2, month: 'February' }, { id: 3, month: 'March' }, { id: 4, month: 'April' }, { id: 5, month: 'May' },
   { id: 6, month: 'June' }, { id: 7, month: 'July' }, { id: 8, month: 'August' }, { id: 9, month: 'September' }, { id: 10, month: 'October' }, { id: 11, month: 'November' }, { id: 12, month: 'December' }]
   private geoCoder: any;
@@ -217,7 +219,7 @@ export class UsersComponent implements OnInit {
   markerDragEnd($event: any) {
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
-    this.cordinates = [this.latitude, this.longitude]
+    this.cordinates = [ this.latitude, this.longitude]
     // this.getAddress(this.latitude, this.longitude);
   }
 
@@ -237,23 +239,35 @@ export class UsersComponent implements OnInit {
   // }
 
   forcastFormData: any = new FormGroup({
-    cordinates: new FormControl(''),
-    corpId: new FormControl('', Validators.required),
+    coordinates: new FormControl(''),
+    cropId: new FormControl('', Validators.required),
     areaOfFarm: new FormControl('', Validators.required)
   })
 
   formSubmit() {
-    this.forcastFormData.setValue({
-      cordinates: ['17.4707751', '78.3587426'],
-      cropId: this.forcastFormData.value.corpId,
-      areaOfFarm: this.forcastFormData.value.areaOfFarm
+    console.log("this.forcastFormData.value.corpId", this.forcastFormData.value);
+    // console.log("cordinates", typeof this.cordinates[0]);
+    
+    // this.forcastFormData.setValue({
+    //   cordinates: this.cordinates,
+    //   cropId: this.forcastFormData.value.corpId,
+    //   areaOfFarm: this.forcastFormData.value.areaOfFarm
+    // });
+    
+
+    this.forcastFormData.patchValue({
+      coordinates : this.cordinates,
+      areaOfFarm: Number(this.forcastFormData.value.areaOfFarm)
     });
 
-    console.log('forCastData', this.forcastFormData);
+    // console.log('forCastData', this.forcastFormData.value);
 
     this.cropsService.generateForecastData(this.forcastFormData.value).subscribe((res: any): any => {
       console.log("res", res);
-      
+      if (res) {
+        this.setForeCast = true;
+        this.foreCastData = res;
+      }
     })
   }
 

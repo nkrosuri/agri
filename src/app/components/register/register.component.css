@@ -16,7 +16,7 @@
     backdrop-filter: blur(3.2px);
     -webkit-backdrop-filter: blur(3.2px);
     border: 1px solid rgba(255, 255, 255, 0.38);
-    min-height: 80vh;
+    min-height: 60vh;
     min-width: 500px;
     position: relative;
     bottom: 12px;
@@ -78,6 +78,17 @@
     left: -30px;
 }
 
+.login-input-for-user-type {
+    padding: 7px 0px;
+    padding-left: 10px;
+    width: 207%;
+    margin: 5px 0px;
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    left: -30px;
+}
+
 .error-message-login{
     color: rgb(243, 17, 17);
     position: relative;
@@ -89,6 +100,7 @@
 #btn-login-1 {
     position: relative;
     left: 190px;
+    bottom: 135px;
 }
 
 #btn-login-2 {
@@ -97,6 +109,7 @@
     letter-spacing: 0.8px;
     color: #dc3545;
     font-weight: 600;
+    bottom: 135px;
 }
 
 #btn-login-2:hover {

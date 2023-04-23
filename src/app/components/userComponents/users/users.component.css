@@ -145,12 +145,40 @@ height: 100%;
 #card-position {
   width: 25rem; 
   margin: 10px;
-  height: 350px;
+  height: 420px;
 }
 
-agm-map {
-  height: 300px;
+#card-position-for-foreCastData {
+  margin-top: 25px;
+  width: 25rem; 
+  margin: 10px;
+  height: auto;
 }
+
+.success {
+  background-color: green;
+  color: white;
+  padding: 4px 8px;
+}
+
+.fail {
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+}
+
+
+.headingName {
+  color: #000000;
+}
+
+.heading-value {
+  margin-left: 10px;
+}
+
+/* agm-map {
+  height: 300px;
+} */
 
 textarea {
   width: 96%;

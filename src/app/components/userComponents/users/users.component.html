@@ -159,8 +159,18 @@
                                     <div class="card-body">
                                         <img class="card-img-top" src={{crop.imageUrl}} alt="Card image cap" width="50"
                                             height="200">
-                                        <h5 class="card-title">{{crop.cropName}}</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">{{crop.description}}</h6>
+                                        <h6 class="mt-2 mb-2 text-muted"><span class="headingName">Crop Name:</span>
+                                            <span class="heading-value">{{crop.cropName}}</span>
+                                        </h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Description:</span> <span
+                                                class="heading-value">{{crop.description}}</span></h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Time Period: </span> <span
+                                                class="heading-value">{{crop.timePeriod}}</span></h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Water Required Per Sq
+                                                Feet:</span> <span
+                                                class="heading-value">{{crop.waterRequiredPerSqFeet}}</span></h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Added By:</span> <span
+                                                class="heading-value">{{crop.addedBy.fullName}}</span></h6>
                                         <div class="text-right"
                                             *ngIf="(userType == 'farm analyzer' && crop.owned == true)">
                                             <button class="btn btn-danger mr-3"
@@ -332,27 +342,61 @@
                                     <div>
                                         <span>Enter Current Location</span>
                                         <input type="text" (keydown.enter)="$event.preventDefault()"
-                                        placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off"
-                                        spellcheck="off" type="text" #search>
+                                            placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off"
+                                            spellcheck="off" type="text" formControlName="coordinates" #search>
                                     </div>
                                     <div>
                                         <span>Crops</span>
-                                        <select name="crops">
-                                            <option value="undefined" default>Select Crop</option>
-                                            <option *ngFor="let crop of cropsData" value={{crop._id}}>{{crop.cropName}}</option>
+                                        <select formControlName="cropId">
+                                            <option value="" default>Select Crop</option>
+                                            <option *ngFor="let crop of cropsData" value={{crop?._id}}>{{crop.cropName}}
+                                            </option>
                                         </select>
                                     </div>
                                     <div>
                                         <span>Area (in accers)</span>
-                                        <input type="text" placeholder="Enter Area">
+                                        <input type="text" placeholder="Enter Area" formControlName="areaOfFarm">
                                     </div>
                                     <div>
                                         <button type="submit" class="btn btn-primary">Generate forecast</button>
                                     </div>
                                 </div>
                             </form>
+                            <div *ngIf="setForeCast" class="d-flex justify-content-center">
+                                <div class="card justify-content-center" id="card-position-for-foreCastData">
+                                    <div class="card-body">
+                                        <h2 class="card-title mb-2 text-muted text-center w-100" *ngIf="foreCastData?.successRate.trim() === '100 %'"><span
+                                            class="heading-value success">Success</span>
+                                    </h2>
+                                    <h6 class="mb-2 text-muted text-center" *ngIf="foreCastData?.successRate.trim() < '100 %'"><span class="headingName">Success Rate:</span> <span
+                                        class="heading-value fail">Fail</span>
+                                    </h6>
+                                        <img class="card-img-top" src={{foreCastData?.imageUrl}} alt="Card image cap"
+                                            width="50" height="200">
+                                        <h6 class="mt-2 mb-2 text-muted"><span class="headingName">Crop Name:</span>
+                                            <span class="heading-value">{{foreCastData?.cropName}}</span>
+                                        </h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Description:</span> <span
+                                                class="heading-value">{{foreCastData?.description}}</span></h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Time Period: </span> <span
+                                                class="heading-value">{{foreCastData?.timePeriod}}</span></h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Water Required Per Sq
+                                                Feet:</span> <span
+                                                class="heading-value">{{foreCastData?.waterRequiredPerSqFeet}}</span>
+                                        </h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">probability Of Water:</span> <span
+                                                class="heading-value">{{foreCastData?.probabilityOfWater}}</span>
+                                        </h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">total Water Required:</span> <span
+                                                class="heading-value">{{foreCastData?.totalWaterRequired}}</span>
+                                        </h6>
+                                        <h6 class="mb-2 text-muted"><span class="headingName">Success Rate:</span> <span
+                                                class="heading-value">{{foreCastData.successRate}}</span>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                         <!-- <h5>Address: {{address}}</h5>
                         <div>Latitude: {{latitude}}</div>
                         <div>Longitude: {{longitude}}</div> -->

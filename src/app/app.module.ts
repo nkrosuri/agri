@@ -33,7 +33,7 @@ import { UsersComponent } from './components/userComponents/users/users.componen
     TabsModule.forRoot(),
     BrowserModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyB6SKjgUQxdRSf2n1-o0iQMMk2Tm2kF_hE',
+      apiKey: 'AIzaSyAhzimOl4-OC3tN3ZYMevDE9Ba3Xoe-q8c',
       libraries: ['places']
     }),
     AppRoutingModule,
