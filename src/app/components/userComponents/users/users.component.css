@@ -129,10 +129,10 @@ height: 100%;
 }
 
 .content {
-    width: 95.6%;
+    width: 98%;
     position: absolute;
-    left: 70px;
-    top: 80px;
+    left: 18px;
+    top: 75px;
     background-color: #f0f0f0;
 }
 
@@ -140,6 +140,7 @@ height: 100%;
   display: flex; 
   flex-wrap: wrap; 
   align-items: center; 
+  justify-content: space-around;
 }
 
 #card-position {
