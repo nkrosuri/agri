@@ -239,7 +239,7 @@ export class UsersComponent implements OnInit {
   // }
 
   forcastFormData: any = new FormGroup({
-    coordinates: new FormControl(''),
+    coordinates: new FormControl([]),
     cropId: new FormControl('', Validators.required),
     areaOfFarm: new FormControl('', Validators.required)
   })
